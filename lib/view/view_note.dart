@@ -54,7 +54,7 @@ class ViewNoteScreen extends StatelessWidget {
                   ),
                 );
 
-                // If the note was updated, update the view
+                // update the view
                 if (updatedNote != null) {
                   onDelete();
                 }
@@ -62,13 +62,7 @@ class ViewNoteScreen extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.white),
-              onPressed: () async {
-                if (id != null) {
-                  await controller.deleteNote(id!);
-                  onDelete();
-                  Navigator.pop(context);
-                }
-              },
+              onPressed: () => _showDeleteConfirmationDialog(context),
             ),
           ],
         ),
@@ -97,6 +91,37 @@ class ViewNoteScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Deletion'),
+          content: const Text('Are you sure you want to delete this note?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Delete',style: TextStyle(color: Colors.red)),
+              onPressed: () async {
+                if (id != null) {
+                  await controller.deleteNote(id!);
+                  onDelete();
+                  Navigator.of(context).pop();
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
