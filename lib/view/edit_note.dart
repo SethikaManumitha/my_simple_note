@@ -8,7 +8,7 @@ class EditNoteScreen extends StatefulWidget {
   final String title;
   final String body;
   final String date;
-  final Color color;  // Accept color here
+  final Color color;
 
   const EditNoteScreen({
     super.key,
@@ -16,13 +16,12 @@ class EditNoteScreen extends StatefulWidget {
     required this.title,
     required this.body,
     required this.date,
-    required this.color,  // Accept color in the constructor
+    required this.color,
   });
 
   @override
   State<EditNoteScreen> createState() => _EditNoteScreenState();
 }
-
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
   late String title;
@@ -46,12 +45,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     super.initState();
     title = widget.title;
     body = widget.body;
-
-    // Initialize controllers with initial text
     titleController = TextEditingController(text: title);
     bodyController = TextEditingController(text: body);
-
-    // Set the initial selected color based on the widget's color
     selectedColor = _getColorName(widget.color);
   }
 
@@ -70,7 +65,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text("Edit Note", style: TextStyle(color: Colors.white, fontSize: 25.0)),
         centerTitle: true,
-        backgroundColor: Colors.purple[700],
+        backgroundColor: Colors.purple[800],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -134,7 +129,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
+        onPressed: () {
           String creationDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
           Note updatedNote = Note(
             id: widget.id,
@@ -143,8 +138,9 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
             date: creationDate,
             color: selectedColor,
           );
-          await controller.updateNote(updatedNote); // Update the note
-          Navigator.popUntil(context, (route) => route.isFirst);
+          controller.updateNote(updatedNote);
+          Navigator.pop(context, updatedNote);
+          Navigator.popUntil(context, (route) => route.isFirst );
         },
         backgroundColor: Colors.red[300],
         child: const Icon(Icons.edit, color: Colors.white),
@@ -173,5 +169,3 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     return 'blue';
   }
 }
-
-

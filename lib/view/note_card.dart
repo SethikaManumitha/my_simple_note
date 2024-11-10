@@ -52,7 +52,9 @@ class NoteCard extends StatelessWidget {
               ),
             ),
           );
+
         },
+
         child: ListTile(
           leading: CircleAvatar(
               backgroundColor: color,

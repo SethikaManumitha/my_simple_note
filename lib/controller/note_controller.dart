@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:my_simple_note/model/note.dart';
 import '../database/database_handler.dart';
 
 class NoteController {
   final DatabaseHandler databaseHandler = DatabaseHandler();
 
+  // Fetch all notes from the database
   Future<List<Note>> fetchNotes(String query) async {
     List<Note> notes = await databaseHandler.retrieveNotes();
     return notes.where((note) => note.title.toLowerCase().contains(query.toLowerCase())).toList();

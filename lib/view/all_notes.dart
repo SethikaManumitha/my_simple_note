@@ -26,9 +26,16 @@ class _AllNotesState extends State<AllNotes> {
   };
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
-    fetchNotes();
+    refreshNotes();
+    print("loaded");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    refreshNotes();
   }
 
   Future<void> refreshNotes() async {
@@ -38,7 +45,7 @@ class _AllNotesState extends State<AllNotes> {
   // Fetch notes
   Future<void> fetchNotes() async {
     if (selectedSortOption != null && selectedSortOption != 'All') {
-      notes = await controller.fetchNotesByLabel(selectedSortOption!); // Fetch notes by label
+      notes = await controller.fetchNotesByLabel(selectedSortOption!);
     } else {
       notes = await controller.fetchNotes(searchQuery);
     }
@@ -117,7 +124,7 @@ class _AllNotesState extends State<AllNotes> {
                     items: <String>['All', 'red', 'yellow', 'green', 'blue'].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(colorLabels[value] ?? value), // Show label name
+                        child: Text(colorLabels[value] ?? value),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -159,6 +166,7 @@ class _AllNotesState extends State<AllNotes> {
                   );
                 },
               ),
+
             ),
           ],
         ),

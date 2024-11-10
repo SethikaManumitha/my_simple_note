@@ -40,8 +40,8 @@ class ViewNoteScreen extends StatelessWidget {
             const SizedBox(width: 16.0),
             IconButton(
               icon: const Icon(Icons.edit, color: Colors.white),
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final updatedNote = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => EditNoteScreen(
@@ -53,42 +53,20 @@ class ViewNoteScreen extends StatelessWidget {
                     ),
                   ),
                 );
+
+                // If the note was updated, update the view
+                if (updatedNote != null) {
+                  onDelete();
+                }
               },
             ),
             IconButton(
               icon: const Icon(Icons.delete, color: Colors.white),
               onPressed: () async {
                 if (id != null) {
-                  // Show confirmation  before deletion
-                  bool? confirmDelete = await showDialog<bool>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Delete Note'),
-                        content: const Text('Are you sure you want to delete this note?'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Cancel'),
-                            onPressed: () {
-                              Navigator.of(context).pop(false);
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Delete',style: TextStyle(color: Colors.red),),
-                            onPressed: () {
-                              Navigator.of(context).pop(true);
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-
-                  if (confirmDelete == true) {
-                    await controller.deleteNote(id!);
-                    onDelete();
-                    Navigator.pop(context);
-                  }
+                  await controller.deleteNote(id!);
+                  onDelete();
+                  Navigator.pop(context);
                 }
               },
             ),
