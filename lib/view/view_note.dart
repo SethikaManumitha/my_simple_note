@@ -94,6 +94,7 @@ class ViewNoteScreen extends StatelessWidget {
     );
   }
 
+
   void _showDeleteConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,

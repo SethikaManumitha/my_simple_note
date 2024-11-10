@@ -29,7 +29,6 @@ class _AllNotesState extends State<AllNotes> {
   void initState()  {
     super.initState();
     refreshNotes();
-    print("loaded");
   }
 
   @override
