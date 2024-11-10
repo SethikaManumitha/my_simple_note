@@ -113,6 +113,7 @@ class _AllNotesState extends State<AllNotes> {
                 children: [
                   DropdownButton<String>(
                     value: selectedSortOption,
+                    hint: Text("Filter By Label"),
                     items: <String>['All', 'red', 'yellow', 'green', 'blue'].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

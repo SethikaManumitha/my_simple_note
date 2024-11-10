@@ -18,7 +18,7 @@ class ViewNoteScreen extends StatelessWidget {
     required this.title,
     required this.body,
     required this.date,
-    required this.color,  // Accept color in the constructor
+    required this.color,
     required this.onDelete,
   });
 
@@ -49,7 +49,7 @@ class ViewNoteScreen extends StatelessWidget {
                       title: title,
                       body: body,
                       date: date,
-                      color: color,  // Pass color here
+                      color: color,
                     ),
                   ),
                 );
@@ -59,9 +59,36 @@ class ViewNoteScreen extends StatelessWidget {
               icon: const Icon(Icons.delete, color: Colors.white),
               onPressed: () async {
                 if (id != null) {
-                  await controller.deleteNote(id!);
-                  onDelete(); // Call a function to refresh the note list after deleting
-                  Navigator.pop(context);
+                  // Show confirmation  before deletion
+                  bool? confirmDelete = await showDialog<bool>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Delete Note'),
+                        content: const Text('Are you sure you want to delete this note?'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('Delete',style: TextStyle(color: Colors.red),),
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+
+                  if (confirmDelete == true) {
+                    await controller.deleteNote(id!);
+                    onDelete();
+                    Navigator.pop(context);
+                  }
                 }
               },
             ),
@@ -95,5 +122,3 @@ class ViewNoteScreen extends StatelessWidget {
     );
   }
 }
-
-
