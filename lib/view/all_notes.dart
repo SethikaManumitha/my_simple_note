@@ -28,17 +28,7 @@ class _AllNotesState extends State<AllNotes> {
   @override
   void initState()  {
     super.initState();
-    refreshNotes();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    refreshNotes();
-  }
-
-  Future<void> refreshNotes() async {
-    await fetchNotes();
+    fetchNotes();
   }
 
   // Fetch notes
@@ -53,6 +43,7 @@ class _AllNotesState extends State<AllNotes> {
 
   bool isAscending = true;
 
+  // Sort notes in ascending and descending order
   Future<void> sortNotes() async {
     notes.sort((a, b) => isAscending ? a.title.compareTo(b.title) : b.title.compareTo(a.title));
     setState(() {
@@ -97,7 +88,7 @@ class _AllNotesState extends State<AllNotes> {
         backgroundColor: Colors.purple[700],
       ),
       body: RefreshIndicator(
-        onRefresh: refreshNotes,
+        onRefresh: fetchNotes,
         child: Column(
           children: [
             Padding(
@@ -130,13 +121,13 @@ class _AllNotesState extends State<AllNotes> {
                       setState(() {
                         selectedSortOption = newValue;
                       });
-                      refreshNotes();
+                      fetchNotes();
                     },
                   ),
 
                   Row(
                     children: [
-                      Text(isAscending ? "AZ" : "ZA"),
+                      Text(isAscending ? "ZA" : "AZ"),
                       IconButton(
                         icon: Icon(
                           Icons.swap_vert,
@@ -161,7 +152,7 @@ class _AllNotesState extends State<AllNotes> {
                     body: notes[index].body,
                     date: notes[index].date,
                     color: _getColorFromName(notes[index].color),
-                    onDelete: refreshNotes,
+                    onDelete: fetchNotes,
                   );
                 },
               ),
@@ -176,7 +167,7 @@ class _AllNotesState extends State<AllNotes> {
             context,
             MaterialPageRoute(builder: (context) => const CreateNoteScreen()),
           );
-          refreshNotes();
+          fetchNotes();
         },
         backgroundColor: Colors.red[300],
         child: const Icon(Icons.add, color: Colors.white),
