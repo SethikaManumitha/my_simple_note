@@ -113,7 +113,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
           Navigator.pop(context);
         },
         backgroundColor: Colors.red[300],
-        child: const Icon(Icons.add,color: Colors.white),
+        child: const Icon(Icons.save,color: Colors.white),
       ),
     );
   }
